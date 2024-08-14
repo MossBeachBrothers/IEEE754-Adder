@@ -3,11 +3,13 @@ module fp_adder (
     input [31:0] operandY,
     output reg [31:0] result
 );
-//registers for parts of number
+
+    
 reg [23:0] mantissa_x, mantissa_y;
 reg [7:0] exponent_x, exponent_y;
-reg sign_x, sign_y; //sign bits
-//Intermediate registers for Mantissa Sum, aligned mantissa, final mantissa
+reg sign_x, sign_y; 
+
+    
 reg [24:0] mantissa_sum;
 reg [24:0] x_aligned, y_aligned;
 reg [7:0] exponent_difference; //stores difference so we can align mantissas before add/sub
@@ -17,14 +19,13 @@ reg [7:0] exponent_final;
 reg sign_final;
 
 always @(*) begin
-    //Get Sign, Exponent, Mantissa from numbers
-    sign_x = operandX[31]; //32nd bit
-    exponent_x = operandX[30:23]; //Bit 23-31
+    sign_x = operandX[31]; 
+    exponent_x = operandX[30:23]; 
 
     if (exponent_x == 0) begin
-        mantissa_x = {1'b0, operandX[22:0]}; //if subnormal, implicit zero
+        mantissa_x = {1'b0, operandX[22:0]}; //if subnormal, add implicit zero
     end else begin
-        mantissa_x = {1'b1, operandX[22:0]}; //if normal, implicit one
+        mantissa_x = {1'b1, operandX[22:0]}; //if normal, add implicit one
     end
 
     $display("operandX: sign = %b, exponent = %b, mantissa = %b", sign_x, exponent_x, mantissa_x); //Display operandX components
@@ -33,9 +34,9 @@ always @(*) begin
     exponent_y = operandY[30:23]; //Bit 23-31
 
     if (exponent_y == 0) begin
-        mantissa_y = {1'b0, operandY[22:0]}; //if subnormal, implicit zero
+        mantissa_y = {1'b0, operandY[22:0]}; //if subnormal, add implicit zero
     end else begin
-        mantissa_y = {1'b1, operandY[22:0]}; //if normal, implicit one
+        mantissa_y = {1'b1, operandY[22:0]}; //if normal, add implicit one
     end
 
     $display("operandY: sign = %b, exponent = %b, mantissa = %b", sign_y, exponent_y, mantissa_y); //Display operandY components
